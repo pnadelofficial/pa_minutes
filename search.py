@@ -13,7 +13,7 @@ if 'page_count' not in st.session_state:
     st.session_state['page_count'] = 1
 
 if 'to_see' not in st.session_state:
-    st.session_state['to_see'] = 5
+    st.session_state['to_see'] = 1
 
 if 'start' not in st.session_state:
     st.session_state['start'] = 0
@@ -77,30 +77,32 @@ def index_search(search_fields, search_query, st, en):
 search = st.text_input('Search for a word or phrase')
 
 with st.sidebar:
-    if st.button('See next five'):
+    if st.button('See next document'):
         st.session_state.start += 5
         st.session_state.to_see += 5
         st.session_state.page_count += 1
-    if st.button('See previous five'):
+    if st.button('See previous document'):
         st.session_state.start -= 5
         st.session_State.to_see -=5
         st.session_state.page_count -= 1
+        
+    if search != '':
+        st.download_button(
+            label = 'Download data from this search as a TXT file',
+            data = ''.join([f'\n--{ref}--\n{doc}' for ref, doc in to_full_file]).encode('utf-8'),
+            file_name = f'pa_minutes_excerpt_{search}.txt',
+            mime = 'text/csv'
+        )
+
+        st.download_button(
+            label = 'Download data just on page this as a TXT file',
+            data = ''.join([f'\n--{ref}--\n{doc}' for ref, doc in to_spec_file]).encode('utf-8'),
+            file_name = f'pa_minutes_excerpt_{search}.txt',
+            mime = 'text/csv'
+        )
+        
 
 if search != '':
     to_full_file, to_spec_file = index_search(['content'], search, st.session_state.start, st.session_state.to_see)
 
     st.write(f'Page: {st.session_state.page_count} of {1+ len(to_full_file)//10}')
-
-    st.download_button(
-            label = 'Download data from this search as a TXT file',
-            data = ''.join([f'\n--{ref}--\n{doc}' for ref, doc in to_full_file]).encode('utf-8'),
-            file_name = f'pa_minutes_excerpt_{search}.txt',
-            mime = 'text/csv'
-     )
-
-    st.download_button(
-            label = 'Download data just on page this as a TXT file',
-            data = ''.join([f'\n--{ref}--\n{doc}' for ref, doc in to_spec_file]).encode('utf-8'),
-            file_name = f'pa_minutes_excerpt_{search}.txt',
-            mime = 'text/csv'
-    )
