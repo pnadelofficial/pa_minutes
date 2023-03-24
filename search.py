@@ -20,7 +20,7 @@ if 'start' not in st.session_state:
 
 @st.cache
 def get_data():
-    minutes_url = 'http://drive.google.com/drive/folders/1fQfkZBFs1FRskhBjKVBb2tyXOC-PAzsE?usp=sharing'
+    minutes_url = 'https://drive.google.com/drive/folders/1g_26aBNRMbpL9CC3wrJfVriFP3cBaaeH?usp=sharing'
     gdown.download_folder(minutes_url, quiet=True, use_cookies=False)
 
 get_data()
