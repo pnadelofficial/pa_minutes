@@ -44,7 +44,7 @@ def inject_highlights(text, searches):
 
 def display_text(result, query):
     text = escape_markdown(result['content'])
-    searches = re.split('AND|OR|NOT',query)
+    searches = re.split('AND|OR|NOT|\s',query)
     searches = [search.strip().lower() for search in searches]
 
     text = inject_highlights(text, searches)
@@ -83,7 +83,7 @@ with st.sidebar:
         st.session_state.page_count += 1
     if st.button('See previous document'):
         st.session_state.start -= 1
-        st.session_State.to_see -= 1
+        st.session_state.to_see -= 1
         st.session_state.page_count -= 1
         
 if search != '':
